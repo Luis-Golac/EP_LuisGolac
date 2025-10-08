@@ -20,9 +20,9 @@ class Reader:
         self.name = name
         self.email = email
         if active_loans is None:
-            active_loans = []
+            self.active_loans = []
         else:
-            active_loans = active_loans
+            self.active_loans = active_loans
         self.days_blocked = days_blocked
 
     def __repr__(self):

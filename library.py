@@ -15,6 +15,26 @@ class Library:
         self.readers: dict[str, Reader] = {}
         self.bioalert: BioAlert = BioAlert(subscribers=[])
 
+    def __is_matching(
+        self,
+        copy: Copy,
+        name: str,
+        year: int = None,
+        edition: str = None,
+        language: str = None,
+    ):
+        if copy.book.name.lower() != name.lower():
+            return False
+        if copy.status != "available":
+            return False
+        if year is not None and copy.book.year != year:
+            return False
+        if edition is not None and copy.book.edition != edition:
+            return False
+        if language is not None and copy.book.language != language:
+            return False
+        return True
+
     def add_book(
         self,
         book: Book,
@@ -87,19 +107,11 @@ class Library:
         edition: str = None,
         language: str = None,
     ) -> int:
-        count: int = 0
-
-        for copy in self.copies.values():
-            if copy.book.name.lower() == name.lower() and copy.status == "available":
-                if year is not None and copy.book.year != year:
-                    continue
-                if edition is not None and copy.book.edition != edition:
-                    continue
-                if language is not None and copy.book.language != language:
-                    continue
-                count += 1
-
-        return count
+        return sum(
+            1
+            for copy in self.copies.values()
+            if self.__is_matching(copy, name, year, edition, language)
+        )
 
     def find_books_by_author(
         self,
@@ -126,7 +138,7 @@ class Library:
     def get_available_copy(
         self,
         book: Book,
-    ) -> Copy | None:
+    ) -> dict[str, str | Copy]:
         result: dict[str, str | Copy] = {}
         reason: str = ""
         for copy in self.copies.values():

@@ -3,18 +3,20 @@ from entities import Book, Author
 
 from datetime import date
 
+name = "Software Engineering"
+
 somerville = Author("Sommerville", date(1951, 2, 23))
 se10_es = Book(
-    "Software Engineering", somerville, 2025, edition="10th", language="ES"
+    name, somerville, 2025, edition="10th", language="ES"
 )
 se9_en = Book(
-    "Software Engineering", somerville, 2023, edition="9th", language="EN"
+    name, somerville, 2023, edition="9th", language="EN"
 )
 se9_es = Book(
-    "Software Engineering", somerville, 2022, edition="9th", language="ES"
+    name, somerville, 2022, edition="9th", language="ES"
 )
 se8_en = Book(
-    "Software Engineering", somerville, 2020, edition="8th", language="EN"
+    name, somerville, 2020, edition="8th", language="EN"
 )
 
 library = Library()
